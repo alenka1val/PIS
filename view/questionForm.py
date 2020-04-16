@@ -38,7 +38,7 @@ class questionForm(tk.Frame):
         tk.Label(self, text="Typ miesta B").grid(row=11, column=0, sticky="W")
         tk.Entry(self, textvariable=self.locationBType).grid(row=12, column=0, sticky="W")
 
-        tk.Button(self, text="OK", command=self.testMe).grid(row=13, column=1, sticky='E')
+        tk.Button(self, text="Ďalšie", command=self.testMe).grid(row=13, column=1, sticky='E')
 
         tk.Label(self, width=25, height=0, bg="white").grid(row=14, column=1)
 
