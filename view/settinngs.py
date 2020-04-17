@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from view.questionForm import questionForm
+from controller.testController import testController
 
 class Settings(tk.Frame):
 
@@ -28,6 +28,4 @@ class Settings(tk.Frame):
     def testMe(self):
         print("Vrchy: " + str(self.hill.get()))
         print("Mesta: " + str(self.city.get()))
-
-        self.destroy()
-        app = questionForm(master=self.master)
+        testController.createTest(self, str(self.hill.get()), str(self.city.get()))

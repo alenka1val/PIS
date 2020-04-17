@@ -1,5 +1,6 @@
 import tkinter as tk
 from view.settinngs import Settings
+from controller.webServices import webServices
 
 
 class Index(tk.Frame):
@@ -21,6 +22,7 @@ class Index(tk.Frame):
     def createTest(self):
         self.destroy()
         app = Settings(master=self.master)
+        webServices.setWebServices()
 
 
 root = tk.Tk()
