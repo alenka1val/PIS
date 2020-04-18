@@ -1,12 +1,11 @@
 from model.test import test
-from view.questionForm import questionForm
-
+from controller.webServices import webServices
 
 class testController():
-    def createTest(settings, hill, city):
+    def createTest(hill, city):
         vytvorenyTest = test(0, hill, city)
 
-        settings.destroy()
-        app = questionForm(master=settings.master)
+    def addQuestion(pointA, pointB):
+        webServices.findDistance(pointA, pointB)
 
-
+        print("Question len: " + str(test.questions.__len__()))
