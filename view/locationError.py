@@ -22,6 +22,6 @@ class locationError(tk.Frame):
         self.destroy()
 
 
-root = tk.Tk()
-app = locationError(master=root)
-app.mainloop()
+#root = tk.Tk()
+#app = locationError(master=root)
+#app.mainloop()

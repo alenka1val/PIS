@@ -49,7 +49,7 @@ class webServices():
         if typ == 'Mesto':
             nieco = 0
 
-            for x in range (0, 10):
+            for x in range (0, 5):
                 try:
                     result = webServices.mesta.service.searchByName(nazov)
                     nieco = 1
@@ -64,12 +64,13 @@ class webServices():
                 lon1 = result[0].coord_lon
                 pointA = geographic_point(nazov, typ, hint, lat1, lon1)
             else:
-                print('Nepodarilo sa zistit mesto. Chce to error okno')
+                print('Nepodarilo sa zistit mesto.')
+                return nazov
 
         elif typ == 'Vrch':
             nieco = 0
 
-            for x in range (0, 10):
+            for x in range (0, 5):
                 try:
                     result = webServices.vrchy.service.searchByName(nazov)
                     nieco = 1
@@ -84,21 +85,22 @@ class webServices():
                 lon1 = result[0].coord_lon
                 pointA = geographic_point(nazov, typ, hint, lat1, lon1)
             else:
-                print('Nepodarilo sa zistit vrchol. Chce to error okno')
+                print('Nepodarilo sa zistit vrchol.')
+                return nazov
 
         return pointA
 
     def findDistance(point1, point2):
             nieco = 0
 
-            for x in range(0, 10):
+            for x in range(0, 5):
                 try:
                     result = webServices.vzdialenost.service.distanceByGPS(point1.lat, point1.lon, point2.lat, point2.lon)
                     nieco = 1
-                    print('preslo zistovanie lat a lon mesta')
+                    print('preslo zistovanie vzdialenosti medzi zadanymi miestami')
                     break
                 except Exception:
-                    print('chyba zistovania mesta')
+                    print('chyba zistovania vzdialenosti')
                 time.sleep(1)
 
             if nieco == 1:
@@ -107,4 +109,5 @@ class webServices():
                 test.addQuestion(quest)
                 test.printTest()
             else:
-                print('Nepodarilo sa zistit mesto. Chce to error okno')
+                print('Nepodarilo sa najst vzdialenost')
+                return 'Nepodarilo sa najst vzdialenost'

@@ -2,6 +2,8 @@ import tkinter as tk
 from controller.webServices import webServices
 from model.test import test
 from controller.testController import testController
+from view.locationError import locationError
+from tkinter import messagebox
 
 
 class Index(tk.Frame):
@@ -116,11 +118,21 @@ class questionForm(tk.Frame):
         tk.Label(self, width=25, height=0, bg="white").grid(row=16, column=1)
 
     def testMe(self):
-
         pointA = webServices.setGP(self.locationAName.get(), self.locationAType, self.locationAHint.get())
         pointB = webServices.setGP(self.locationBName.get(), self.locationBType, self.locationBHint.get())
+        print(pointA, pointB)
 
-        testController.addQuestion(pointA, pointB)
+        bad = []
+        if isinstance(pointA, str):
+            bad.append(pointA)
+        if isinstance(pointB, str):
+            bad.append(pointB)
+
+        if bad:
+            error_message = "Niektoré zo zadaných miest sa nepodarilo nájsť. \n Chybne zadané údaje: {} .\n Overte správnosť zadaných údajov, alebo zvoľte iné.".format(bad)
+            messagebox.showerror(title='Chyba!', message=error_message)
+        else:
+            testController.addQuestion(pointA, pointB)
 
         self.destroy()
 
