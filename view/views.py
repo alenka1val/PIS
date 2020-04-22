@@ -135,7 +135,7 @@ class questionForm(tk.Frame):
             testController.addQuestion(pointA, pointB)
 
         self.destroy()
-
+ 
         if test.questions.__len__() > 1 and test.questions.__len__() < 5:
             app = nextQuestionDialog(master=self.master)
         elif test.questions.__len__() == 5:
