@@ -136,7 +136,7 @@ class questionForm(tk.Frame):
 
         self.destroy()
 
-        if test.questions.__len__() > 2 and test.questions.__len__() < 5:
+        if test.questions.__len__() > 1 and test.questions.__len__() < 5:
             app = nextQuestionDialog(master=self.master)
         elif test.questions.__len__() == 5:
             app = sucessDialog(master=self.master)
@@ -202,6 +202,7 @@ class nextQuestionDialog(tk.Frame):
     def no(self):
         self.destroy()
 
+        webServices.saveTest()
         # TODO save it all
 
         app = Index(master=self.master)

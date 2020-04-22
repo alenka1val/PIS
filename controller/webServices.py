@@ -9,6 +9,7 @@ class webServices():
     mesta = None
     vrchy = None
     vzdialenost = None
+    ukladanie = None
 
     def setWebServices():
         transport = Transport(timeout=5)
@@ -20,7 +21,7 @@ class webServices():
                 print('nastavene WSDL mesta')
                 break
             except Exception:
-                print('chyba mesta')
+                print('chyba inicializacie miest')
                 time.sleep(1)
 
         nieco = 0
@@ -31,7 +32,7 @@ class webServices():
                 print('nastavene WSDL vrchy')
                 break
             except Exception:
-                print('chyba vrchy')
+                print('chyba inicializacie vrchov')
                 time.sleep(1)
 
         nieco = 0
@@ -42,7 +43,18 @@ class webServices():
                 print('nastavene WSDL vzdialenosti')
                 break
             except Exception:
-                print('chyba vzdialenosti')
+                print('chyba inicializacie vzdialenosti')
+                time.sleep(1)
+
+        nieco = 0
+        while nieco == 0:
+            try:
+                webServices.ukladanie = Client('http://pis.predmety.fiit.stuba.sk/pis/ws/Students/Team033Tests?WSDL',transport=transport)
+                nieco = 1
+                print('nastavene WSDL ukladania')
+                break
+            except Exception:
+                print('chyba inicializacie ukladania')
                 time.sleep(1)
 
     def setGP(nazov, typ, hint):
@@ -111,3 +123,44 @@ class webServices():
             else:
                 print('Nepodarilo sa najst vzdialenost')
                 return 'Nepodarilo sa najst vzdialenost'
+
+    def saveTest():
+        nieco = 0
+        otazka = 1
+        zaznamy = []
+        zaznam = ''
+        mnozstvo = len(test.questions)
+        vrch = True
+        mesto = True
+
+        print('mnozstvo otazok: ', mnozstvo)
+
+        if test.hill == 0:
+            vrch = False
+
+        if test.town == 0:
+            mesto = False
+
+        for x in test.questions:
+            zaznam = (x.point1.name + ' @ ' + x.point1.hint + ' @ ' + x.point2.name + ' @ ' + x.point2.hint + ' @ ' + str(x.answer))
+            print(zaznam)
+            zaznamy.append(zaznam)
+
+        for y in range(0, 5):
+            zaznamy.append('')
+
+        for x in range(0, 5):
+            try:
+                result = webServices.ukladanie.service.insert(team_id='033', team_password='P77N64',
+                             Tests={'id': 0, 'name': 'testingInProgram', 'Author':'testUser', 'Peaks': vrch, 'Cities': mesto,
+                                   'Q1': zaznamy[0],
+                                   'Q2': zaznamy[1],
+                                   'Q3': zaznamy[2],
+                                   'Q4': zaznamy[3],
+                                   'Q5': zaznamy[4]})
+                nieco = 1
+                print('preslo ukladanie vzdialenosti')
+                break
+            except Exception:
+                print('nepodarilo sa ulozit test')
+            time.sleep(1)
