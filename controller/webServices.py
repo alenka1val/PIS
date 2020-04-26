@@ -1,6 +1,5 @@
 from zeep import Client
 from zeep.transports import Transport
-from model.geographic_point import geographic_point
 from model.test import test
 from model.question import question
 import time
@@ -10,6 +9,7 @@ class webServices():
     vrchy = None
     vzdialenost = None
     ukladanie = None
+    stop = True
 
     def setWebServices():
         transport = Transport(timeout=5)
@@ -57,7 +57,7 @@ class webServices():
                 print('chyba inicializacie ukladania')
                 time.sleep(1)
 
-    def setGP(nazov, typ, hint):
+    def setGP(nazov, typ):
         if typ == 'Mesto':
             nieco = 0
 
@@ -72,9 +72,7 @@ class webServices():
                 time.sleep(1)
 
             if nieco == 1 :
-                lat1 = result[0].coord_lat
-                lon1 = result[0].coord_lon
-                pointA = geographic_point(nazov, typ, hint, lat1, lon1)
+                return result
             else:
                 print('Nepodarilo sa zistit mesto.')
                 return nazov
@@ -93,14 +91,11 @@ class webServices():
                 time.sleep(1)
 
             if nieco == 1 :
-                lat1 = result[0].coord_lat
-                lon1 = result[0].coord_lon
-                pointA = geographic_point(nazov, typ, hint, lat1, lon1)
+                return result
             else:
                 print('Nepodarilo sa zistit vrchol.')
                 return nazov
 
-        return pointA
 
     def findDistance(point1, point2):
             nieco = 0
