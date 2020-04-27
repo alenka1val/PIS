@@ -79,6 +79,8 @@ class questionForm(tk.Frame):
 
         self.moznostiA = []
         self.moznostiB = []
+        self.typeA = ''
+        self.typeB = ''
 
         self.locationATypeString = ''
         self.locationBTypeString = ''
@@ -135,8 +137,6 @@ class questionForm(tk.Frame):
     def testMe(self):
 
         miesto = self.posib.get()
-        print(miesto)
-
         lat1 = self.moznostiA[int(miesto[0])].coord_lat
         lon1 = self.moznostiA[int(miesto[0])].coord_lon
 
@@ -144,10 +144,8 @@ class questionForm(tk.Frame):
         lat2 = self.moznostiB[int(miesto[0])].coord_lat
         lon2 = self.moznostiB[int(miesto[0])].coord_lon
 
-        pointA = geographic_point(self.locationAName.get(), self.locationATypeString, self.locationAHint.get(), lat1,
-                                  lon1)
-        pointB = geographic_point(self.locationBName.get(), self.locationBTypeString, self.locationBHint.get(), lat2,
-                                  lon2)
+        pointA = geographic_point(self.moznostiA[int(miesto[0])].name, self.typeA, self.locationAHint.get(), lat1, lon1)
+        pointB = geographic_point(self.moznostiB[int(miesto[0])].name, self.typeB, self.locationBHint.get(), lat2, lon2)
 
         testController.addQuestion(pointA, pointB)
 
@@ -241,6 +239,7 @@ class questionForm(tk.Frame):
                 messagebox.showerror(title='Chyba!', message=error_message)
 
             elif len(point) > 0:
+                self.typeA = self.locationATypeString
                 self.moznostiA = point
                 moznosti = []
                 for x in range(len(point)):
@@ -281,6 +280,7 @@ class questionForm(tk.Frame):
                 messagebox.showerror(title='Chyba!', message=error_message)
 
             elif len(point) > 0:
+                self.typeB = self.locationBTypeString
                 self.moznostiB = point
                 moznosti = []
                 for x in range(len(point)):

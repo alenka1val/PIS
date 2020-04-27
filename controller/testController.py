@@ -3,7 +3,7 @@ from controller.webServices import webServices
 
 class testController():
     def createTest(hill, city):
-        vytvorenyTest = test(0, hill, city)
+        vytvorenyTest = test(1, hill, city)
 
     def addQuestion(pointA, pointB):
         webServices.findDistance(pointA, pointB)

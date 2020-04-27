@@ -129,11 +129,18 @@ class webServices():
         mesto = True
 
         print('mnozstvo otazok: ', mnozstvo)
+        print('nastavenia testu su:  vrch:', test.hill, ', mesto: ', test.town)
 
-        if test.hill == 0:
+        if test.hill == '0':
             vrch = False
+            print('Vrch je FALSE')
+            print(vrch)
+        else:
+            print('Vrch je TRUE')
 
-        if test.town == 0:
+        status = test.status
+
+        if test.town == '0':
             mesto = False
 
         for x in test.questions:
@@ -152,7 +159,8 @@ class webServices():
                                    'Q2': zaznamy[1],
                                    'Q3': zaznamy[2],
                                    'Q4': zaznamy[3],
-                                   'Q5': zaznamy[4]})
+                                   'Q5': zaznamy[4],
+                                    'status': status})
                 nieco = 1
                 print('preslo ukladanie vzdialenosti')
                 break
