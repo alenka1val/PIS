@@ -140,12 +140,12 @@ class questionForm(tk.Frame):
         lat1 = self.moznostiA[int(miesto[0])].coord_lat
         lon1 = self.moznostiA[int(miesto[0])].coord_lon
 
-        miesto = self.posib2.get()
-        lat2 = self.moznostiB[int(miesto[0])].coord_lat
-        lon2 = self.moznostiB[int(miesto[0])].coord_lon
+        miesto2 = self.posib2.get()
+        lat2 = self.moznostiB[int(miesto2[0])].coord_lat
+        lon2 = self.moznostiB[int(miesto2[0])].coord_lon
 
         pointA = geographic_point(self.moznostiA[int(miesto[0])].name, self.typeA, self.locationAHint.get(), lat1, lon1)
-        pointB = geographic_point(self.moznostiB[int(miesto[0])].name, self.typeB, self.locationBHint.get(), lat2, lon2)
+        pointB = geographic_point(self.moznostiB[int(miesto2[0])].name, self.typeB, self.locationBHint.get(), lat2, lon2)
 
         testController.addQuestion(pointA, pointB)
 
