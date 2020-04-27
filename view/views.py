@@ -3,7 +3,6 @@ from controller.webServices import webServices
 from model.test import test
 from controller.testController import testController
 from model.geographic_point import geographic_point
-from view.locationError import locationError
 from tkinter import messagebox
 
 
@@ -52,7 +51,8 @@ class Settings(tk.Frame):
 
     def testMe(self):
         if self.hill.get() == 0 and self.city.get() == 0:
-            tk.Label(self, text="Prosím vyplňte nastavenia testu!", fg="red").grid(row=1, column=0, padx=5, pady=5)
+            message="Prosím vyplňte nastavenia testu!"
+            messagebox.showerror(title="Chyba", message=message)
         else:
             print("Vrchy: " + str(self.hill.get()))
             print("Mesta: " + str(self.city.get()))
@@ -100,7 +100,7 @@ class questionForm(tk.Frame):
 
         tk.Label(self, text="Miesto A:").grid(row=3, column=0, sticky="W")
         tk.Entry(self, textvariable=self.locationAName).grid(row=4, column=0, sticky="W")
-        tk.Button(self, text="Vyhladaj", command=self.searchA).grid(row=4, column=1, sticky='W')
+        tk.Button(self, text="Vyhľadaj", command=self.searchA).grid(row=4, column=1, sticky='W')
         self.menuA = tk.OptionMenu(self, self.posib, ())
         self.menuA.grid(row=4, column=2, sticky="W")
 
@@ -121,7 +121,7 @@ class questionForm(tk.Frame):
 
         tk.Label(self, text="Miesto B:").grid(row=11, column=0, sticky="W")
         tk.Entry(self, textvariable=self.locationBName).grid(row=12, column=0, sticky="W")
-        tk.Button(self, text="Vyhladaj", command=self.searchB).grid(row=12, column=1, sticky='W')
+        tk.Button(self, text="Vyhľadaj", command=self.searchB).grid(row=12, column=1, sticky='W')
         self.menuB = tk.OptionMenu(self, self.posib2, ())
         self.menuB.grid(row=12, column=2, sticky="W")
 
@@ -133,21 +133,6 @@ class questionForm(tk.Frame):
         tk.Label(self, width=25, height=0, bg="white").grid(row=16, column=1)
 
     def testMe(self):
-        # pointA = webServices.setGP(self.locationAName.get(), self.locationATypeString, self.locationAHint.get(), self)
-        # pointB = webServices.setGP(self.locationBName.get(), self.locationBTypeString, self.locationBHint.get(), self)
-        # print(pointA, pointB)
-        #
-        # bad = []
-        # if isinstance(pointA, str):
-        #     bad.append(pointA)
-        # if isinstance(pointB, str):
-        #     bad.append(pointB)
-        #
-        # if bad:
-        #     error_message = "Niektoré zo zadaných miest sa nepodarilo nájsť. \n Chybne zadané údaje: {} .\n Overte správnosť zadaných údajov, alebo zvoľte iné.".format(bad)
-        #     messagebox.showerror(title='Chyba!', message=error_message)
-        # else:
-        #     testController.addQuestion(pointA, pointB)
 
         miesto = self.posib.get()
         print(miesto)
@@ -159,9 +144,10 @@ class questionForm(tk.Frame):
         lat2 = self.moznostiB[int(miesto[0])].coord_lat
         lon2 = self.moznostiB[int(miesto[0])].coord_lon
 
-
-        pointA = geographic_point(self.locationAName.get(), self.locationATypeString, self.locationAHint.get(), lat1, lon1)
-        pointB = geographic_point(self.locationBName.get(), self.locationBTypeString, self.locationBHint.get(), lat2, lon2)
+        pointA = geographic_point(self.locationAName.get(), self.locationATypeString, self.locationAHint.get(), lat1,
+                                  lon1)
+        pointB = geographic_point(self.locationBName.get(), self.locationBTypeString, self.locationBHint.get(), lat2,
+                                  lon2)
 
         testController.addQuestion(pointA, pointB)
 
@@ -176,37 +162,52 @@ class questionForm(tk.Frame):
 
     def validation(self):
         error = 0
+        message = ""
 
         if test.hill == '1' and test.town == '1':
             self.locationATypeString = self.locationAType.get()
             self.locationBTypeString = self.locationBType.get()
 
         if self.locationATypeString == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=2, column=1, padx=5, pady=5)
-            error+=1
+            errmes = "Prosím vyplňte pole: Typ miesta A\n"
+            message = message + errmes
+
+            error += 1
 
         if self.locationAName.get() == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=4, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Miesto A\n"
+            message = message + errmes
+
             error += 1
 
         if self.locationAHint.get() == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=6, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Miesto A - nápoveda\n"
+            message = message + errmes
+
             error += 1
 
         if self.locationBTypeString == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=10, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Typ miesta B\n"
+            message = message + errmes
+
             error += 1
 
         if self.locationBName.get() == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=12, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Miesto B\n"
+            message = message + errmes
+
             error += 1
 
         if self.locationBHint.get() == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=14, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Miesto B - nápoveda\n"
+            message = message + errmes
+
             error += 1
 
         if error == 0:
-            self.testMe();
+            self.testMe()
+        else:
+            messagebox.showerror(title="Chyba", message=message)
 
     def multiple(self):
         print("dostal som sa sem")
@@ -215,15 +216,20 @@ class questionForm(tk.Frame):
 
     def searchA(self):
         error = 0
+        message = ""
 
         if test.hill == '1' and test.town == '1':
             self.locationATypeString = self.locationAType.get()
 
         if self.locationATypeString == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=2, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Typ miesta A\n"
+            message = message + errmes
+
             error += 1
         if self.locationAName.get() == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=4, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Miesto A\n"
+            message = message + errmes
+
             error += 1
 
         if error == 0:
@@ -238,7 +244,8 @@ class questionForm(tk.Frame):
                 self.moznostiA = point
                 moznosti = []
                 for x in range(len(point)):
-                    moznost = (str(x) + ': ' + point[x].name + ' lat: ' + str(point[x].coord_lat) + ", lon: " + str(point[x].coord_lon))
+                    moznost = (str(x) + ': ' + point[x].name + ' lat: ' + str(point[x].coord_lat) + ", lon: " + str(
+                        point[x].coord_lon))
                     moznosti.append(moznost)
 
                 self.posib.set('')
@@ -246,18 +253,23 @@ class questionForm(tk.Frame):
                 for choice in moznosti:
                     self.menuA['menu'].add_command(label=choice, command=tk._setit(self.posib, choice))
                 self.posib.set(moznosti[0])
+        else:
+            messagebox.showerror(title="Chyba", message=message)
 
     def searchB(self):
         error = 0
+        message = ""
 
         if test.hill == '1' and test.town == '1':
             self.locationBTypeString = self.locationBType.get()
 
         if self.locationBTypeString == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=2, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Typ miesta B\n"
+            message = message + errmes
             error += 1
         if self.locationBName.get() == '':
-            tk.Label(self, text="Prosím vyplňte pole!", fg="red").grid(row=4, column=1, padx=5, pady=5)
+            errmes = "Prosím vyplňte pole: Miesto B\n"
+            message = message + errmes
             error += 1
 
         if error == 0:
@@ -272,7 +284,8 @@ class questionForm(tk.Frame):
                 self.moznostiB = point
                 moznosti = []
                 for x in range(len(point)):
-                    moznost = (str(x) + ': ' + point[x].name + ' lat: ' + str(point[x].coord_lat) + ", lon: " + str(point[x].coord_lon))
+                    moznost = (str(x) + ': ' + point[x].name + ' lat: ' + str(point[x].coord_lat) + ", lon: " + str(
+                        point[x].coord_lon))
                     moznosti.append(moznost)
 
                 self.posib2.set('')
@@ -280,6 +293,8 @@ class questionForm(tk.Frame):
                 for choice in moznosti:
                     self.menuB['menu'].add_command(label=choice, command=tk._setit(self.posib2, choice))
                 self.posib2.set(moznosti[0])
+        else:
+            messagebox.showerror(title="Chyba", message=message)
 
 class nextQuestionDialog(tk.Frame):
 
@@ -306,7 +321,6 @@ class nextQuestionDialog(tk.Frame):
         self.destroy()
 
         webServices.saveTest()
-        # TODO save it all
 
         app = Index(master=self.master)
 
@@ -328,32 +342,10 @@ class sucessDialog(tk.Frame):
         tk.Label(self, width=30, height=0, bg="white").grid(row=4, column=0)
 
     def testMe(self):
-        # TODO save it all
 
         self.destroy()
         app = Index(master=self.master)
 
-class multipleFrame2(tk.Frame):
-
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack()
-
-        self.create_widgets()
-
-    def create_widgets(self):
-        tk.Label(self, text="Test bol úspešne vytvorený").grid(row=0, column=0, columnspan=5, padx=5, pady=5)
-
-        tk.Button(self, text="Rozumiem", command=self.testMe).grid(row=3, column=0, padx=5, pady=5)
-
-        tk.Label(self, width=30, height=0, bg="white").grid(row=4, column=0)
-
-    def testMe(self):
-        # TODO save it all
-        webServices.stop = False
-        print("aj toto funguje")
-        self.master.destroy()
 
 if __name__ == "__main__":
     root = tk.Tk()
