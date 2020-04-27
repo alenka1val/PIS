@@ -172,8 +172,8 @@ class questionForm(tk.Frame):
 
             error += 1
 
-        if self.locationAName.get() == '':
-            errmes = "Prosím vyplňte pole: Miesto A\n"
+        if self.posib.get() == '':
+            errmes = "Prosím vyhľadajte Miesto A\n"
             message = message + errmes
 
             error += 1
@@ -190,8 +190,8 @@ class questionForm(tk.Frame):
 
             error += 1
 
-        if self.locationBName.get() == '':
-            errmes = "Prosím vyplňte pole: Miesto B\n"
+        if self.posib2.get() == '':
+            errmes = "Prosím vyhľadajte Miesto B\n"
             message = message + errmes
 
             error += 1
