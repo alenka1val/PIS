@@ -391,10 +391,15 @@ class Settings2(tk.Frame):
             error = webServices.getTest()
             if error == 1:
                 print('nepodarilo sa ziskat testy')
-                # todo Nepodarilo sa nacitat, chcete neviem co<
+                self.destroy()
+                app = errorTest(master=self.master)
+                return
 
             elif error == 2:
                 print('na z8klade nastavení nebol nájdený žiaden test zvolte ine nastavenia prosim')
+                self.destroy()
+                app = testNotFound(master=self.master)
+                return
                 # todo Nebol najdeny ziaden test error
 
             self.destroy()
@@ -485,6 +490,56 @@ class sucessTest(tk.Frame):
     def testMe(self):
         self.destroy()
         app = Index(master=self.master)
+
+class errorTest(tk.Frame):
+
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.pack()
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        tk.Label(self, text="Nepodarilo sa získať testy.\n Chcete to skúsiť znova?").grid(columnspan=2, padx=5, pady=5)
+
+        tk.Button(self, text="Áno", command=self.yes).grid(row=1, column=1, padx=5, pady=5)
+        tk.Button(self, text="Nie", command=self.no).grid(row=1, column=0, padx=5, pady=5)
+
+        tk.Label(self, width=30, height=0, bg="white").grid(row=4, column=0)
+
+    def no(self):
+        self.destroy()
+        app = Index(master=self.master)
+
+    def yes(self):
+        self.destroy()
+        app = Settings2(master=self.master)
+
+class testNotFound(tk.Frame):
+
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.pack()
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        tk.Label(self, text="Nenašli sa žiadne testy vyhovujúce kritériám.\n Prajete si zvoliť iné nastavenia testu?").grid(columnspan=2, padx=5, pady=5)
+
+        tk.Button(self, text="Áno", command=self.yes).grid(row=1, column=1, padx=5, pady=5)
+        tk.Button(self, text="Nie", command=self.no).grid(row=1, column=0, padx=5, pady=5)
+
+        tk.Label(self, width=30, height=0, bg="white").grid(row=4, column=0)
+
+    def no(self):
+        self.destroy()
+        app = Index(master=self.master)
+
+    def yes(self):
+        self.destroy()
+        app = Settings2(master=self.master)
 
 
 if __name__ == "__main__":
