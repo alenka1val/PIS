@@ -4,6 +4,7 @@ from model.test import test
 from controller.testController import testController
 from model.geographic_point import geographic_point
 from tkinter import messagebox
+from model.testForKnowledge import testFromDB
 
 
 class Index(tk.Frame):
@@ -19,7 +20,7 @@ class Index(tk.Frame):
 
         tk.Button(self, text="Vytvoriť test", command=self.createTest).grid(row=1, column=0, pady=5, padx=5, sticky='E')
 
-        tk.Button(self, text="Test", command=self.createTest).grid(row=1, column=0, pady=5, padx=5, sticky='W')
+        tk.Button(self, text="Test", command=self.createTestForTesting).grid(row=1, column=0, pady=5, padx=5, sticky='W')
 
         tk.Label(self, width=50, height=15, bg="grey").grid(row=3, column=0, padx=10, pady=10)
 
@@ -28,7 +29,7 @@ class Index(tk.Frame):
         webServices.setWebServices()
         app = Settings(master=self.master)
 
-    def createTest(self):
+    def createTestForTesting(self):
         self.destroy()
         webServices.setWebServices()
         app = Settings2(master=self.master)
@@ -385,8 +386,17 @@ class Settings2(tk.Frame):
         else:
             print("Vrchy: " + str(self.hill.get()))
             print("Mesta: " + str(self.city.get()))
-            # todo call webservice
-            # testController.createTest(str(self.hill.get()), str(self.city.get()))
+
+            testController.createTest(str(self.hill.get()), str(self.city.get()))
+            error = webServices.getTest()
+            if error == 1:
+                print('nepodarilo sa ziskat testy')
+                # todo Nepodarilo sa nacitat, chcete neviem co<
+
+            elif error == 2:
+                print('na z8klade nastavení nebol nájdený žiaden test zvolte ine nastavenia prosim')
+                # todo Nebol najdeny ziaden test error
+
             self.destroy()
             app = Testquestion(master=self.master)
 
@@ -403,15 +413,16 @@ class Testquestion(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        tk.Label(self, text="Otázka " + str(test.questions.__len__() + 1)).grid(row=0, column=0)
+
+        tk.Label(self, text="Otázka " + str(testFromDB.sucasna_otazka + 1)).grid(row=0, column=0)
 
         tk.Label(self, text="Určte vzdialenosti medzi miestami:").grid(columnspan=2, sticky="W", pady=10)
 
-        tk.Label(self, text="Miesto A:").grid(row=3, column=0, sticky="W")
+        tk.Label(self, text= testFromDB.questions[testFromDB.sucasna_otazka][0] + ":").grid(row=3, column=0, sticky="W")
 
         tk.Button(self, text="Nápoveda", command=self.show_hintA).grid(row=4, column=0, sticky='W', padx=20)
 
-        tk.Label(self, text="Miesto B:").grid(row=3, column=1, sticky="W")
+        tk.Label(self, text= testFromDB.questions[testFromDB.sucasna_otazka][2] + ":").grid(row=3, column=1, sticky="W")
 
         tk.Button(self, text="Nápoveda", command=self.show_hintB).grid(row=4, column=1, sticky='W', padx=20)
 
@@ -420,10 +431,10 @@ class Testquestion(tk.Frame):
         tk.Button(self, text="Potvrdiť", command=self.validation).grid(row=6, column=1, sticky='w', pady=10)
 
     def show_hintA(self):
-        tk.Label(self, text="This is napoveda A").grid(row=5, column=0, sticky="W")
+        tk.Label(self, text= testFromDB.questions[testFromDB.sucasna_otazka][1]).grid(row=5, column=0, sticky="W")
 
     def show_hintB(self):
-        tk.Label(self, text="This is napoveda B").grid(row=5, column=1, sticky="W")
+        tk.Label(self, text= testFromDB.questions[testFromDB.sucasna_otazka][3]).grid(row=5, column=1, sticky="W")
 
     def validation(self):
         error = 0
@@ -437,30 +448,16 @@ class Testquestion(tk.Frame):
 
         if error == 0:
             print(self.answer.get())
-            # TODO webservices.somefunction(self.answer.get())
-            # point = webServices.setGP(self.locationAName.get(), self.locationATypeString)
+            testFromDB.setPoints(self.answer.get())
 
-            # if isinstance(point, str):
-            #     error_message = "Niektoré zo zadaných miest sa nepodarilo nájsť. \n Chybne zadané údaje: {} .\n Overte správnosť zadaných údajov, alebo zvoľte iné.".format(
-            #         point)
-            #     messagebox.showerror(title='Chyba!', message=error_message)
-            #
-            # elif len(point) > 0:
-            #     self.typeA = self.locationATypeString
-            #     self.moznostiA = point
-            #     moznosti = []
-            #     for x in range(len(point)):
-            #         moznost = (str(x) + ': ' + point[x].name + ' lat: ' + str(point[x].coord_lat) + ", lon: " + str(
-            #             point[x].coord_lon))
-            #         moznosti.append(moznost)
-            #
-            #     self.posib.set('')
-            #     self.menuA['menu'].delete(0, 'end')
-            #     for choice in moznosti:
-            #         self.menuA['menu'].add_command(label=choice, command=tk._setit(self.posib, choice))
-            #     self.posib.set(moznosti[0])
+
             self.destroy()
-            app = Testquestion(master=self.master)
+            if testFromDB.dalsi == 1:
+                app = Testquestion(master=self.master)
+            else:
+                #todo zobrazit stav bodov
+                app = sucessTest(master=self.master)
+                print('pocet ziskanych bodov je: ', testFromDB.body)
         else:
             messagebox.showerror(title="Chyba", message=message)
 
@@ -479,7 +476,7 @@ class sucessTest(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        tk.Label(self, text="Gratulujeme!\n Získali ste:\n xbodov").grid(row=0, column=0, columnspan=5, padx=5, pady=5)
+        tk.Label(self, text="Gratulujeme!\n Získali ste:\n" + str(testFromDB.body)).grid(row=0, column=0, columnspan=5, padx=5, pady=5)
 
         tk.Button(self, text="Potvrdiť", command=self.testMe).grid(row=3, column=0, padx=5, pady=5)
 

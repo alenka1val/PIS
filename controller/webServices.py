@@ -1,8 +1,10 @@
 from zeep import Client
 from zeep.transports import Transport
 from model.test import test
+from model.testForKnowledge import testFromDB
 from model.question import question
 import time
+import random
 
 class webServices():
     mesta = None
@@ -167,3 +169,59 @@ class webServices():
             except Exception:
                 print('nepodarilo sa ulozit test')
             time.sleep(1)
+
+    def getTest():
+        result = []
+        schopneTesty = []
+        preslo = 0
+        otazky = []
+        print('vypisujem nastavenia testu vo funkcii getTest:', test.status, ' ', test.hill, ' ', test.town)
+
+        for x in range(0, 5):
+            try:
+                result = webServices.ukladanie.service.getAll()
+                print('preslo nacitanie testov')
+                preslo = 1
+                break
+            except Exception:
+                print('nepodarilo sa nacitat test')
+            time.sleep(1)
+
+        if preslo == 0:
+
+            return 1
+
+
+        for x in result:
+            if (x.status == 1):
+                if (test.hill == '1' and x.Peaks == True and test.town == '1' and x.Cities  == True):
+                        schopneTesty.append(x)
+                elif (test.hill == '1' and x.Peaks == True and test.town == '0' and x.Cities  == False):
+                        schopneTesty.append(x)
+                elif (test.hill == '0' and x.Peaks == False and test.town == '1' and x.Cities == False):
+                        schopneTesty.append(x)
+
+        if len(schopneTesty) == 0:
+
+            return 2
+
+        a = random.randint(0, len(schopneTesty) -1)
+        print('nahodne cislo je: ', a)
+
+        otazka = schopneTesty[a].Q1.split('@')
+        otazky.append(otazka)
+        otazka = schopneTesty[a].Q2.split('@')
+        otazky.append(otazka)
+        if schopneTesty[a].Q3 != None:
+            otazka = schopneTesty[a].Q3.split('@')
+            otazky.append(otazka)
+        if schopneTesty[a].Q4 != None:
+            otazka = schopneTesty[a].Q4.split('@')
+            otazky.append(otazka)
+        if schopneTesty[a].Q5 != None:
+            otazka = schopneTesty[a].Q5.split('@')
+            otazky.append(otazka)
+
+        print(otazky)
+        testNaTestovanie = testFromDB(otazky)
+        return 0
