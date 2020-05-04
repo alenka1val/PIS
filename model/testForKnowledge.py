@@ -21,10 +21,14 @@ class testFromDB():
         real = float(vzdialenost)
         real = int(real)
         uhadnute = int(odpoved)
+        if real == 0:
+            real = 0.00000000000000001
+        if uhadnute == 0:
+            uhadnute = 0.00000000000000001
 
         if abs(real - uhadnute) <= real:
             if uhadnute > real:
-                sucasneBody = (real * 100)/uhadnute
+                sucasneBody = (real * 100) / uhadnute
             else:
                 sucasneBody = (uhadnute * 100) / real
         else:
