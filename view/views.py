@@ -111,6 +111,7 @@ class questionForm(tk.Frame):
         tk.Label(self, text="Miesto A:").grid(row=3, column=0, sticky="W")
         tk.Entry(self, textvariable=self.locationAName).grid(row=4, column=0, sticky="W")
         tk.Button(self, text="Vyhľadaj", command=self.searchA).grid(row=4, column=1, sticky='W')
+        tk.Label(self, text="Zvolené MiestoA:").grid(row=3, column=2)
         self.menuA = tk.OptionMenu(self, self.posib, ())
         self.menuA.grid(row=4, column=2, sticky="W")
 
@@ -132,6 +133,7 @@ class questionForm(tk.Frame):
         tk.Label(self, text="Miesto B:").grid(row=11, column=0, sticky="W")
         tk.Entry(self, textvariable=self.locationBName).grid(row=12, column=0, sticky="W")
         tk.Button(self, text="Vyhľadaj", command=self.searchB).grid(row=12, column=1, sticky='W')
+        tk.Label(self, text="Zvolené MiestoB:").grid(row=11, column=2)
         self.menuB = tk.OptionMenu(self, self.posib2, ())
         self.menuB.grid(row=12, column=2, sticky="W")
 
