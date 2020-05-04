@@ -198,7 +198,7 @@ class webServices():
                         schopneTesty.append(x)
                 elif (test.hill == '1' and x.Peaks == True and test.town == '0' and x.Cities  == False):
                         schopneTesty.append(x)
-                elif (test.hill == '0' and x.Peaks == False and test.town == '1' and x.Cities == False):
+                elif (test.hill == '0' and x.Peaks == False and test.town == '1' and x.Cities == True):
                         schopneTesty.append(x)
 
         if len(schopneTesty) == 0:

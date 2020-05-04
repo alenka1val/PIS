@@ -428,7 +428,9 @@ class Testquestion(tk.Frame):
 
         tk.Entry(self, textvariable=self.answer).grid(row=6, column=0, sticky="W")
 
-        tk.Button(self, text="Potvrdiť", command=self.validation).grid(row=6, column=1, sticky='w', pady=10)
+        tk.Label(self, text="metrov").grid(row=6, column=1)
+
+        tk.Button(self, text="Potvrdiť", command=self.validation).grid(row=6, column=2, sticky='w', pady=10)
 
     def show_hintA(self):
         tk.Label(self, text= testFromDB.questions[testFromDB.sucasna_otazka][1]).grid(row=5, column=0, sticky="W")
