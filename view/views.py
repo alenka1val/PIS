@@ -358,7 +358,6 @@ class sucessDialog(tk.Frame):
         app = Index(master=self.master)
 
 
-# todo another settings
 class Settings2(tk.Frame):
 
     def __init__(self, master=None):
@@ -398,11 +397,10 @@ class Settings2(tk.Frame):
                 return
 
             elif error == 2:
-                print('na z8klade nastavení nebol nájdený žiaden test zvolte ine nastavenia prosim')
+                print('na základe nastavení nebol nájdený žiaden test zvolte ine nastavenia prosim')
                 self.destroy()
                 app = testNotFound(master=self.master)
                 return
-                # todo Nebol najdeny ziaden test error
 
             self.destroy()
             app = Testquestion(master=self.master)
@@ -466,7 +464,6 @@ class Testquestion(tk.Frame):
             if testFromDB.dalsi == 1:
                 app = Testquestion(master=self.master)
             else:
-                #todo zobrazit stav bodov
                 app = sucessTest(master=self.master)
                 print('pocet ziskanych bodov je: ', testFromDB.body)
         else:
@@ -476,7 +473,6 @@ class Testquestion(tk.Frame):
 '''This is a frame which shows after sucesfull end of test'''
 
 
-# todo
 class sucessTest(tk.Frame):
 
     def __init__(self, master=None):
