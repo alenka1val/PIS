@@ -423,6 +423,8 @@ class Testquestion(tk.Frame):
 
         tk.Label(self, text="Otázka " + str(testFromDB.sucasna_otazka + 1)).grid(row=0, column=0)
 
+        tk.Label(self, text="Získali ste: " + str(testFromDB.body) + " b").grid(row=0, column=1)
+
         tk.Label(self, text="Určte vzdialenosti medzi miestami:").grid(columnspan=2, sticky="W", pady=10)
 
         tk.Label(self, text= testFromDB.questions[testFromDB.sucasna_otazka][0] + ":").grid(row=3, column=0, sticky="W")
@@ -485,7 +487,7 @@ class sucessTest(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        tk.Label(self, text="Gratulujeme!\n Získali ste:\n" + str(testFromDB.body)).grid(row=0, column=0, columnspan=5, padx=5, pady=5)
+        tk.Label(self, text="Gratulujeme!\n Získali ste:\n" + str(testFromDB.body) + "\nbodov").grid(row=0, column=0, columnspan=5, padx=5, pady=5)
 
         tk.Button(self, text="Potvrdiť", command=self.testMe).grid(row=3, column=0, padx=5, pady=5)
 
