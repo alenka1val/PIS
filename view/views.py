@@ -332,9 +332,7 @@ class nextQuestionDialog(tk.Frame):
     def no(self):
         self.destroy()
 
-        webServices.saveTest()
-
-        app = Index(master=self.master)
+        app = sucessDialog(master=self.master)
 
 
 class sucessDialog(tk.Frame):
@@ -343,6 +341,8 @@ class sucessDialog(tk.Frame):
         super().__init__(master)
         self.master = master
         self.pack()
+
+        webServices.saveTest()
 
         self.create_widgets()
 
